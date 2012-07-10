@@ -82,7 +82,7 @@
     if (topOfStack) [stack removeLastObject];
     
     if([topOfStack isKindOfClass:[NSNumber class]]){
-        descStr = [NSString stringWithFormat:@"%@",[topOfStack stringValue]];
+        descStr = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%g",[topOfStack doubleValue] ]];
     } else if ([topOfStack isKindOfClass:[NSString class]]){
         if (![self isOperation:topOfStack]){
             // if it is a string, but not an operation, then it must be a variable;

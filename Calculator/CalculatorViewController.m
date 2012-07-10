@@ -78,7 +78,7 @@
     while ((key = [enumerator nextObject])) {
         /* code that uses the returned key */
         varValue = [self.testVariableValues objectForKey:key];
-        varValsStr = [NSString stringWithFormat:@"%@ %@ = %@,", varValsStr, key, [varValue stringValue]];
+        varValsStr = [NSString stringWithFormat:@"%@ %@ = %@,", varValsStr, key, [NSString stringWithFormat:@"%g",[varValue doubleValue] ]];
     }
     // Remove the last comma
     if ([varValsStr length] > 0){
@@ -117,7 +117,7 @@
     resultPtr = [[CalculatorBrain class] runProgram:self.brain.program usingVariableValues:self.testVariableValues];
     
     if ([resultPtr isKindOfClass:[NSNumber class]]){
-        self.display.text= [resultPtr stringValue];
+        self.display.text= [NSString stringWithFormat:@"%g",[resultPtr doubleValue]];
     }
     else {
         self.display.text = resultPtr;
@@ -136,7 +136,7 @@
     }
     resultPtr = [self.brain performOperation:operation usingVariableValues:self.testVariableValues];
     if ([resultPtr isKindOfClass:[NSNumber class]]){
-        self.display.text= [resultPtr stringValue];
+        self.display.text= [NSString stringWithFormat:@"%g",[resultPtr doubleValue] ];
     }
     else {
         self.display.text = resultPtr;
@@ -218,7 +218,7 @@
     }
     resultPtr = [[CalculatorBrain class] runProgram:self.brain.program usingVariableValues:self.testVariableValues];
     if ([resultPtr isKindOfClass:[NSNumber class]]){
-        self.display.text= [resultPtr stringValue];
+        self.display.text= [NSString stringWithFormat:@"%g",[resultPtr doubleValue] ];
     }
     else {
         self.display.text = resultPtr;
