@@ -213,7 +213,9 @@
         self.testVariableValues = nil;
     }
     [self updateTestVarValuesDisplay];
-    
+    if (self.userIsInTheMiddleOfEnteringANumber) {
+        [self enterPressed];
+    }
     resultPtr = [[CalculatorBrain class] runProgram:self.brain.program usingVariableValues:self.testVariableValues];
     if ([resultPtr isKindOfClass:[NSNumber class]]){
         self.display.text= [resultPtr stringValue];
