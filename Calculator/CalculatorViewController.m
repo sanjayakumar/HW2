@@ -12,9 +12,6 @@
 @interface CalculatorViewController()
 @property (nonatomic) BOOL userIsInTheMiddleOfEnteringANumber;
 @property (nonatomic, strong) CalculatorBrain *brain;
-@property (nonatomic, strong) NSDictionary *testVariableValues;
-@property (nonatomic, strong) NSDictionary *testDict1;
-@property (nonatomic, strong) NSDictionary *testDict2;
 - (void) updateUserActionDisplay:(NSString *)dispString;
 @end
 
@@ -25,12 +22,9 @@
 
 @synthesize display = _display;
 @synthesize userActionDisplay = _userActionDisplay;
-@synthesize testVarValuesDisplay = _testVarValuesDisplay;
 @synthesize userIsInTheMiddleOfEnteringANumber = _userIsInTheMiddleOfEnteringANumber;
 @synthesize brain = _brain;
-@synthesize testVariableValues = _testVariableValues;
-@synthesize testDict1 = _testDict1;
-@synthesize testDict2 = _testDict2;
+
 
 - (CalculatorBrain *)brain
 {
@@ -38,25 +32,6 @@
     return _brain;
 }
 
-- (NSDictionary *)testDict1
-{
-    if (!_testDict1) _testDict1 = [NSDictionary dictionaryWithObjectsAndKeys: 
-                                   [NSNumber numberWithDouble:5],   @"x", 
-                                   [NSNumber numberWithDouble:4.8], @"a", 
-                                   [NSNumber numberWithDouble:0],   @"b", 
-                                   nil];
-    return _testDict1;
-}
-
-- (NSDictionary *)testDict2
-{
-    if (!_testDict2) _testDict2 = [NSDictionary dictionaryWithObjectsAndKeys: 
-                                   [NSNumber numberWithDouble:-10],   @"x", 
-                                   [NSNumber numberWithDouble:15.8],  @"a", 
-                                   [NSNumber numberWithDouble:0],     @"b", 
-                                   nil];
-    return _testDict2;
-}
 
 
 - (void) updateUserActionDisplay: (NSString *)dispString {
@@ -69,23 +44,6 @@
     self.userActionDisplay.text = userDispText;
 }
 
-- (void) updateTestVarValuesDisplay {
-    NSEnumerator *enumerator = [self.testVariableValues keyEnumerator];
-    id key;
-    NSNumber *varValue;
-    NSString *varValsStr = @"";
-    
-    while ((key = [enumerator nextObject])) {
-        /* code that uses the returned key */
-        varValue = [self.testVariableValues objectForKey:key];
-        varValsStr = [NSString stringWithFormat:@"%@ %@ = %@,", varValsStr, key, [NSString stringWithFormat:@"%g",[varValue doubleValue] ]];
-    }
-    // Remove the last comma
-    if ([varValsStr length] > 0){
-        varValsStr = [varValsStr substringWithRange:NSMakeRange(0, [varValsStr length]-1)];
-    }
-    self.testVarValuesDisplay.text = varValsStr;
-}
 
 - (IBAction)digitPressed:(UIButton *)sender {
     NSString *digit = sender.currentTitle;
@@ -114,7 +72,7 @@
     id resultPtr;
     [self.brain pushOperand:[self.display.text doubleValue]];
     self.userIsInTheMiddleOfEnteringANumber = NO;
-    resultPtr = [[CalculatorBrain class] runProgram:self.brain.program usingVariableValues:self.testVariableValues];
+    resultPtr = [[CalculatorBrain class] runProgram:self.brain.program usingVariableValues:nil]; // review later to see if nil is the right parameter
     
     if ([resultPtr isKindOfClass:[NSNumber class]]){
         self.display.text= [NSString stringWithFormat:@"%g",[resultPtr doubleValue]];
@@ -134,7 +92,7 @@
     if (self.userIsInTheMiddleOfEnteringANumber) {
         [self enterPressed];
     }
-    resultPtr = [self.brain performOperation:operation usingVariableValues:self.testVariableValues];
+    resultPtr = [self.brain performOperation:operation usingVariableValues:nil]; // revie wlater to see if nil is the right parameter
     if ([resultPtr isKindOfClass:[NSNumber class]]){
         self.display.text= [NSString stringWithFormat:@"%g",[resultPtr doubleValue] ];
     }
@@ -182,7 +140,6 @@
 
 - (void)viewDidUnload {
     [self setUserActionDisplay:nil];
-    [self setTestVarValuesDisplay:nil];
     [super viewDidUnload];
 }
 
@@ -202,28 +159,9 @@
     }
 }
 
-- (IBAction)testButtonPressed:(UIButton *)sender {
-    id resultPtr;
-    NSString *testKeyName = [sender currentTitle];
-    if ([testKeyName isEqualToString: @"Test1"]){
-        self.testVariableValues = self.testDict1;
-    } else if ([testKeyName isEqualToString: @"Test2"]){
-        self.testVariableValues = self.testDict2;
-    } else if ([testKeyName isEqualToString: @"Test3"]){
-        self.testVariableValues = nil;
-    }
-    [self updateTestVarValuesDisplay];
-    if (self.userIsInTheMiddleOfEnteringANumber) {
-        [self enterPressed];
-    }
-    resultPtr = [[CalculatorBrain class] runProgram:self.brain.program usingVariableValues:self.testVariableValues];
-    if ([resultPtr isKindOfClass:[NSNumber class]]){
-        self.display.text= [NSString stringWithFormat:@"%g",[resultPtr doubleValue] ];
-    }
-    else {
-        self.display.text = resultPtr;
-    }
-    
-    // note: no need to update descriptionOfProgram since the program itself hasn't changed
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    NSLog(@"in prepare for Segue from Segue name %@", segue.identifier);
 }
+
 @end
