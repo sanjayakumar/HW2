@@ -11,9 +11,12 @@
 
 @interface GraphView()
 @property BOOL userHasSelectedOrigin; // triple tap or panning
+- (void) drawGraphFromMinX: (CGFloat) xmin toMaxX: (CGFloat) xmax inContext: (CGContextRef) context;
 @end
 
 @implementation GraphView
+
+@synthesize dataSource = _dataSource;
 
 @synthesize graphScale = _graphScale;
 @synthesize graphOrigin = _graphOrigin;
@@ -35,6 +38,7 @@
     if (graphScale != _graphScale) {
         _graphScale = graphScale;
         [self setNeedsDisplay]; // any time our scale changes, call for redraw
+        NSLog(@"Scale is %f", _graphScale);
     }
 }
 
@@ -110,15 +114,34 @@
 {
     [self setup]; // get initialized when we come out of a storyboard
 }
+- (void) drawGraphFromMinX: (CGFloat) xmin toMaxX: (CGFloat) xmax inContext: (CGContextRef) context;
+{
+    CGFloat x, y /*, trueX, trueY*/;
+    UIGraphicsPushContext(context);
+    CGContextBeginPath(context);
+    x = xmin;
+    // trueX = (x - self.graphOrigin.x)/self.graphScale;
+    // trueY = trueX*trueX;
+    // y = self.graphOrigin.y - (trueY*self.graphScale);
+    y = [self.dataSource getYInPixelsForX:x forView:self];
+    CGContextMoveToPoint(context, x, y);
+    for (x = xmin; x <= xmax; x++){
+        //trueX = (x - self.graphOrigin.x)/self.graphScale;
+        //trueY = trueX*trueX;
+        //y = self.graphOrigin.y - (trueY*self.graphScale);
+        y = [self.dataSource getYInPixelsForX:x forView:self];
+        CGContextAddLineToPoint(context, x, y);
+    }
+    CGContextStrokePath(context);
+    UIGraphicsPopContext();
+}
 
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
     
-    NSLog(@"entered graphView drawRect");
+    CGContextRef context = UIGraphicsGetCurrentContext();
     
     //CGRect graphBounds;
     CGPoint midPoint;
@@ -133,7 +156,8 @@
     graphScale = self.graphScale;
     
     [AxesDrawer drawAxesInRect: self.bounds originAtPoint:midPoint scale:graphScale];
-    NSLog(@"Done with graphView drawRect");
+    
+    [self drawGraphFromMinX:self.bounds.origin.x toMaxX:self.bounds.origin.x+ self.bounds.size.width inContext:context];
 }
 
 

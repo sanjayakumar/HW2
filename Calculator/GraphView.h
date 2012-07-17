@@ -7,6 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+@class GraphView;
+
+@protocol GraphViewDataSource
+- (CGFloat) getYInPixelsForX:(CGFloat)xVal forView:(GraphView *)sender;
+@end
+
+
 
 @interface GraphView : UIView
 @property (nonatomic)CGFloat graphScale;
@@ -15,5 +22,7 @@
 - (void)pinch:(UIPinchGestureRecognizer *)gesture;  // resizes the graph
 - (void)tripleTapHandler: (UITapGestureRecognizer *)taps; // defines origin of graph
 - (void)panHandler: (UIPanGestureRecognizer *)pan; // Yes, I know the variable name is punny!
+
+@property (nonatomic, weak) IBOutlet id <GraphViewDataSource> dataSource;
 
 @end
