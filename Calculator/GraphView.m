@@ -38,7 +38,6 @@
     if (graphScale != _graphScale) {
         _graphScale = graphScale;
         [self setNeedsDisplay]; // any time our scale changes, call for redraw
-        NSLog(@"Scale is %f", _graphScale);
     }
 }
 
@@ -116,21 +115,34 @@
 }
 - (void) drawGraphFromMinX: (CGFloat) xmin toMaxX: (CGFloat) xmax inContext: (CGContextRef) context;
 {
-    CGFloat x, y /*, trueX, trueY*/;
+    CGFloat x, y;
+    id yObjPtr;
+    BOOL previousPointValid = NO;
+    
     UIGraphicsPushContext(context);
     CGContextBeginPath(context);
+    [[UIColor blueColor] setStroke];
     x = xmin;
-    // trueX = (x - self.graphOrigin.x)/self.graphScale;
-    // trueY = trueX*trueX;
-    // y = self.graphOrigin.y - (trueY*self.graphScale);
-    y = [self.dataSource getYInPixelsForX:x forView:self];
-    CGContextMoveToPoint(context, x, y);
-    for (x = xmin; x <= xmax; x++){
-        //trueX = (x - self.graphOrigin.x)/self.graphScale;
-        //trueY = trueX*trueX;
-        //y = self.graphOrigin.y - (trueY*self.graphScale);
-        y = [self.dataSource getYInPixelsForX:x forView:self];
-        CGContextAddLineToPoint(context, x, y);
+    yObjPtr = [self.dataSource getYInPixelsForX:x forView:self];
+    if ([yObjPtr isKindOfClass:[NSNumber class]]){
+        y = [yObjPtr floatValue];
+        previousPointValid = YES;
+        CGContextMoveToPoint(context, x, y);
+    }
+    
+    for (x = xmin; x <= xmax; x += 1.0/self.contentScaleFactor){
+        yObjPtr = [self.dataSource getYInPixelsForX:x forView:self];
+        if ([yObjPtr isKindOfClass:[NSNumber class]]){
+            y = [yObjPtr floatValue];
+            if (previousPointValid){
+                CGContextAddLineToPoint(context, x, y);
+            } else {
+                CGContextMoveToPoint(context, x, y);
+                previousPointValid = YES;
+            }
+        } else {
+            previousPointValid = NO;
+        }
     }
     CGContextStrokePath(context);
     UIGraphicsPopContext();
@@ -143,21 +155,15 @@
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    //CGRect graphBounds;
     CGPoint midPoint;
     CGFloat graphScale;
-    
-    /*graphBounds.origin.x = 10;
-    graphBounds.origin.y = 10;
-    graphBounds.size.width = 50;
-    graphBounds.size.height = 100;*/
     
     midPoint = self.graphOrigin;
     graphScale = self.graphScale;
     
     [AxesDrawer drawAxesInRect: self.bounds originAtPoint:midPoint scale:graphScale];
     
-    [self drawGraphFromMinX:self.bounds.origin.x toMaxX:self.bounds.origin.x+ self.bounds.size.width inContext:context];
+    [self drawGraphFromMinX:0 toMaxX:self.bounds.size.width inContext:context];
 }
 
 

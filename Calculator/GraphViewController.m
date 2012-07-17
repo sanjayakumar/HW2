@@ -13,11 +13,11 @@
 
 @interface GraphViewController () <GraphViewDataSource>
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
-@property (weak, nonatomic) IBOutlet UILabel *formulaDisplay;
+@property (weak, nonatomic) IBOutlet UILabel *equationDisplay;
 @end
 
 @implementation GraphViewController
-@synthesize formulaDisplay = _formulaDisplay;
+@synthesize equationDisplay = _formulaDisplay;
 
 @synthesize graphView = _graphView;
 @synthesize program = _program;
@@ -38,17 +38,21 @@
     [self.graphView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(panHandler:)]];
     
     self.graphView.dataSource = self;
+    
     // Now print the formula we are plotting
-    self.formulaDisplay.text = [CalculatorBrain descriptionOfProgram:self.program];
+    // If there is a comma, only show the text after the rightmost command
+    NSArray *listPrograms = [[CalculatorBrain descriptionOfProgram:self.program] componentsSeparatedByString:@","];
+    
+    self.equationDisplay.text = [NSString stringWithFormat:@"y = %@",[listPrograms lastObject]];
 
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
 }
 
-- (CGFloat) getYInPixelsForX:(CGFloat)xVal forView:(GraphView *)sender
+- (id) getYInPixelsForX:(CGFloat)xVal forView:(GraphView *)sender
 {
     NSDictionary *xvalDict;
     CGFloat trueX, trueY;
@@ -66,14 +70,14 @@
     calcResult = [CalculatorBrain runProgram:self.program usingVariableValues:xvalDict]; // fix this to allow for string value (i.e. error) return
     if ([calcResult isKindOfClass:[NSNumber class]]){
         trueY = [calcResult floatValue];
-        return(sender.graphOrigin.y - (trueY*sender.graphScale));
+        return([NSNumber numberWithFloat: sender.graphOrigin.y - (trueY*sender.graphScale)]);
     } else {
-        return 0; // revisit this later
+        return @"Error"; // When the caller receives a string, it will know there is an error in the value calculation
     }
 }
 
 - (void)viewDidUnload {
-    [self setFormulaDisplay:nil];
+    [self setEquationDisplay:nil];
     [super viewDidUnload];
 }
 @end

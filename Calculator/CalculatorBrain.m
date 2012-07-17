@@ -201,9 +201,9 @@
         } else if ([operation isEqualToString:@"π"]){
             result = M_PI;
         } else if ([operation isEqualToString:@"sin"]){
-            result = sin(firstOperandValue/180*M_PI);
+            result = sin(firstOperandValue/*/180*M_PI*/); // Graph Plot of Radians looks much better!
         } else if ([operation isEqualToString:@"cos"]){
-            result = cos(firstOperandValue/180*M_PI);
+            result = cos(firstOperandValue/*/180*M_PI*/);
         } else if ([operation isEqualToString:@"sqrt"]){
             if (firstOperandValue < 0){
                 return @"Error: Square Root of -ve value!";
