@@ -135,7 +135,7 @@
         // other than Undo, do the normal thing: push operation on stack, run program
         [self.programStack addObject:operation];
     }
-    return [[self class] runProgram:self.program usingVariableValues:variableValues];
+    return [[self class] runProgram:self.program usingVariableValues:nil];
 }
 
 + (id)popOperandOffProgramStack:(NSMutableArray *)stack
@@ -170,6 +170,8 @@
                 secondOperandPtr = [self popOperandOffProgramStack:stack];
                 
                 if ([secondOperandPtr isKindOfClass:[NSString class]]){
+                    // if the error is "Variable in Use", it may be more informative to the user to check for
+                    // insufficient operands or other kind of errors based on the first operand
                     return secondOperandPtr; // if the operand is a string instead of a number, then it means it contains an error message
                 } else {
                     secondOperandValue = [secondOperandPtr doubleValue];
@@ -211,6 +213,9 @@
             result = pow(firstOperandValue, 0.5);
         } else if ([operation isEqualToString:@"ChSgn"]){
             result = firstOperandValue * -1;
+        } else {
+            // variable in stack but no value assigned
+            return @"Variable in Use";
         }
     }
     return [[NSNumber class] numberWithDouble:result];
@@ -241,11 +246,10 @@
                 // then replace the variable with its value in program using the provided dictionary
                 // if the value is not in the dictonary, then use 0 i.e. nil returned value from dictionary is OK
                 NSNumber * varValue = [variableValues objectForKey:var];
-                if (!varValue || ![varValue isKindOfClass:[NSNumber class]]){
-                    varValue = [NSNumber numberWithDouble:0];
+                if (varValue && [varValue isKindOfClass:[NSNumber class]]){
+                    // If the dictionary has a value corresponding to the variable, substitute the value for the variable in programStack 
+                    [stack replaceObjectAtIndex:i withObject:varValue];
                 }
-                [stack replaceObjectAtIndex:i withObject:varValue];
-                // NSLog(@"Replacing %@ with %g", var, [varValue doubleValue]);
             }
         }
     }
