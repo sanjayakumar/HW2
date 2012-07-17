@@ -9,12 +9,15 @@
 #import "GraphViewController.h"
 #import "GraphView.h"
 #import "CalculatorBrain.h"
+#import "AxesDrawer.h"
 
 @interface GraphViewController () <GraphViewDataSource>
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
+@property (weak, nonatomic) IBOutlet UILabel *formulaDisplay;
 @end
 
 @implementation GraphViewController
+@synthesize formulaDisplay = _formulaDisplay;
 
 @synthesize graphView = _graphView;
 @synthesize program = _program;
@@ -35,6 +38,9 @@
     [self.graphView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(panHandler:)]];
     
     self.graphView.dataSource = self;
+    // Now print the formula we are plotting
+    self.formulaDisplay.text = [CalculatorBrain descriptionOfProgram:self.program];
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -47,6 +53,11 @@
     NSDictionary *xvalDict;
     CGFloat trueX, trueY;
     id calcResult;
+    CGPoint formulaLocation;
+    
+    formulaLocation.x = 10;
+    formulaLocation.y = 10;
+    
     trueX = (xVal - sender.graphOrigin.x)/sender.graphScale;
     
     xvalDict = [NSDictionary dictionaryWithObject:[NSNumber numberWithDouble:trueX] forKey:@"x"];
@@ -61,4 +72,8 @@
     }
 }
 
+- (void)viewDidUnload {
+    [self setFormulaDisplay:nil];
+    [super viewDidUnload];
+}
 @end

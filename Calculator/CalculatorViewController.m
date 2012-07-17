@@ -82,7 +82,7 @@
         self.display.text = resultPtr;
     }
     
-    [self updateUserActionDisplay: [[CalculatorBrain class] descriptionOfProgram:self.brain.program]];
+    [self updateUserActionDisplay: [CalculatorBrain descriptionOfProgram:self.brain.program]];
     
 }
 
