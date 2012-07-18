@@ -25,6 +25,13 @@
 - (void)setProgram:(id)program
 {
     _program = program;
+    
+    // Now print the formula we are plotting
+    // If there is a comma, only show the text after the rightmost command
+    NSArray *listPrograms = [[CalculatorBrain descriptionOfProgram:_program] componentsSeparatedByString:@","];
+    
+    self.equationDisplay.text = [NSString stringWithFormat:@"y = %@",[listPrograms lastObject]];
+    
     [self.graphView setNeedsDisplay]; // redraw the graph if the program changes
 }
 
@@ -47,7 +54,7 @@
     
     // Now print the formula we are plotting
     // If there is a comma, only show the text after the rightmost command
-    NSArray *listPrograms = [[CalculatorBrain descriptionOfProgram:self.program] componentsSeparatedByString:@","];
+    NSArray *listPrograms = [[CalculatorBrain descriptionOfProgram:_program] componentsSeparatedByString:@","];
     
     self.equationDisplay.text = [NSString stringWithFormat:@"y = %@",[listPrograms lastObject]];
 

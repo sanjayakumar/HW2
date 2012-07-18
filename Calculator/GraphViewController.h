@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RotatableViewController.h"
 
-@interface GraphViewController : UIViewController
-@property (nonatomic, strong) id program; //During prepareForSegue, the CalculatorViewController puts the program to be graphed into this property
+@interface GraphViewController : RotatableViewController
+@property (nonatomic, strong) id program; // This program is a copy of the one created by CalculatorBrain
 @end
