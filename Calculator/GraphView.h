@@ -25,4 +25,6 @@
 
 @property (nonatomic, weak) IBOutlet id <GraphViewDataSource> dataSource;
 
+@property (nonatomic) BOOL drawUsingDots;
+
 @end

@@ -11,4 +11,5 @@
 
 @interface GraphViewController : RotatableViewController
 @property (nonatomic, strong) id program; // This program is a copy of the one created by CalculatorBrain
+@property (nonatomic) BOOL drawUsingDots;
 @end

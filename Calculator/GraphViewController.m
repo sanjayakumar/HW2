@@ -25,6 +25,13 @@
 @synthesize program = _program;
 @synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
 @synthesize toolbar = _toolbar;
+@synthesize drawUsingDots = _drawUsingDots;
+
+- (void) setDrawUsingDots:(BOOL)drawUsingDots
+{
+    _drawUsingDots = drawUsingDots;
+    self.graphView.drawUsingDots = drawUsingDots;
+}
 
 - (void)setSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem
 {
@@ -45,7 +52,6 @@
     
     if (![[listPrograms lastObject] isEqualToString:@""]){
         self.equationDisplay.text = [NSString stringWithFormat:@"y = %@",[listPrograms lastObject]];
-        NSLog(@"Formula: %@", [listPrograms lastObject]);
     } else {
         self.equationDisplay.text = nil;
     }
@@ -58,6 +64,7 @@
     [self printEquationInGraph];
     
     [self.graphView setNeedsDisplay]; // redraw the graph if the program changes
+    
 }
 
 - (void)setGraphView:(GraphView *)graphView
@@ -76,6 +83,7 @@
     [self.graphView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(panHandler:)]];
     
     self.graphView.dataSource = self;
+    self.graphView.drawUsingDots = self.drawUsingDots;
     
     [self printEquationInGraph];
 }
@@ -97,6 +105,14 @@
         return([NSNumber numberWithFloat: [calcResult floatValue]]);
     } else {
         return @"Error"; // When the caller receives a string, it will know there is an error in the value calculation
+    }
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    if (self.splitViewController) {
+        // default value of slider is on
+        self.drawUsingDots = YES;
     }
 }
 

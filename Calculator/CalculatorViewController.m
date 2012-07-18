@@ -13,6 +13,7 @@
 @interface CalculatorViewController()
 @property (nonatomic) BOOL userIsInTheMiddleOfEnteringANumber;
 @property (nonatomic, strong) CalculatorBrain *brain;
+@property (nonatomic) BOOL drawUsingDots;
 - (void) updateUserActionDisplay:(NSString *)dispString;
 @end
 
@@ -25,6 +26,7 @@
 @synthesize userActionDisplay = _userActionDisplay;
 @synthesize userIsInTheMiddleOfEnteringANumber = _userIsInTheMiddleOfEnteringANumber;
 @synthesize brain = _brain;
+@synthesize drawUsingDots = _drawUsingDots;
 
 
 - (CalculatorBrain *)brain
@@ -162,7 +164,9 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    // segue only applies to iPhone
     [segue.destinationViewController setProgram:self.brain.program];
+    [segue.destinationViewController setDrawUsingDots:self.drawUsingDots];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -182,6 +186,15 @@
     }
 }
 
+- (IBAction)drawGraphInDotMode:(UISwitch *)sender {
+    self.drawUsingDots = sender.on;
+    // if iPad then detail view already has the graph. Let it know to update the draw mode
+    if (self.splitViewController){
+        id detailViewController = [[self.splitViewController viewControllers] lastObject];
+        [detailViewController  setDrawUsingDots: self.drawUsingDots];
+    }
+}
+
 // Need to disable swipes to reveal calculator for iOS 5.1, interferes with pan. MAKE SURE you check that
 // the splitview controller supports the selector "respondsToSelecter" before you call it, or you will
 // crash on iOS 5!
@@ -192,6 +205,9 @@
             self.splitViewController.presentsWithGesture = NO;
         }
     }
+    
+    // default value of slider is on
+    self.drawUsingDots = YES;
 }
 
 @end

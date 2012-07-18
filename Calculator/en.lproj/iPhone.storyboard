@@ -404,6 +404,21 @@
                                     <segue destination="3Yo-Q1-OO3" kind="push" identifier="DrawGraph" id="dUy-Nc-ALz"/>
                                 </connections>
                             </button>
+                            <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="X9o-tJ-Hnf">
+                                <rect key="frame" x="221" y="378" width="79" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Draw Dots"/>
+                                <connections>
+                                    <action selector="drawGraphInDotMode:" destination="2" eventType="valueChanged" id="ISs-xN-NnN"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Graph Dot Mode" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="10" id="X0N-Xv-Ujj">
+                                <rect key="frame" x="187" y="368" width="41" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -482,6 +497,7 @@
             <relationships>
                 <relationship kind="outlet" name="equationDisplay" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
             </relationships>
         </class>
         <class className="RotatableViewController" superclassName="UIViewController">

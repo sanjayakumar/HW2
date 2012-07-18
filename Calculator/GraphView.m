@@ -21,6 +21,7 @@
 @synthesize graphScale = _graphScale;
 @synthesize graphOrigin = _graphOrigin;
 @synthesize userHasSelectedOrigin = _userHasSelectedOrigin;
+@synthesize drawUsingDots = _drawUsingDots;
 
 #define DEFAULT_SCALE 5 // points per Unit CHECK THIS!
 
@@ -73,6 +74,14 @@
         [userDef setFloat:graphOrigin.y forKey:@"graphOriginY"];
         [userDef setBool:TRUE forKey:@"userHasSetOrigin"];
         self.userHasSelectedOrigin = YES;
+        [self setNeedsDisplay];
+    }
+}
+
+- (void) setDrawUsingDots:(BOOL)drawUsingDots
+{
+    if (_drawUsingDots != drawUsingDots){
+        _drawUsingDots = drawUsingDots;
         [self setNeedsDisplay];
     }
 }
@@ -133,6 +142,7 @@
 {
     [self setup]; // get initialized when we come out of a storyboard
 }
+
 - (void) drawGraphFromMinX: (CGFloat) xmin toMaxX: (CGFloat) xmax inContext: (CGContextRef) context;
 {
     CGFloat x, y;
@@ -142,23 +152,32 @@
     UIGraphicsPushContext(context);
     CGContextBeginPath(context);
     [[UIColor blueColor] setStroke];
-    x = xmin;
-    yObjPtr = [self.dataSource getYInPixelsForX:(x - self.graphOrigin.x)/self.graphScale forView:self];
-    if ([yObjPtr isKindOfClass:[NSNumber class]]){
-        y = self.graphOrigin.y - ([yObjPtr floatValue]*self.graphScale);
-        previousPointValid = YES;
-        CGContextMoveToPoint(context, x, y);
+    [[UIColor blueColor] setFill];
+    
+    if (!self.drawUsingDots){
+        x = xmin;
+        yObjPtr = [self.dataSource getYInPixelsForX:(x - self.graphOrigin.x)/self.graphScale forView:self];
+        if ([yObjPtr isKindOfClass:[NSNumber class]]){
+            y = self.graphOrigin.y - ([yObjPtr floatValue]*self.graphScale);
+            previousPointValid = YES;
+            CGContextMoveToPoint(context, x, y);
+        }
     }
     
     for (x = xmin; x <= xmax; x += 1.0/self.contentScaleFactor){
         yObjPtr = [self.dataSource getYInPixelsForX:(x - self.graphOrigin.x)/self.graphScale forView:self];
         if ([yObjPtr isKindOfClass:[NSNumber class]]){
             y = self.graphOrigin.y - ([yObjPtr floatValue]*self.graphScale);
-            if (previousPointValid){
-                CGContextAddLineToPoint(context, x, y);
+            if (self.drawUsingDots) {
+                CGRect rect = CGRectMake(x, y, 1.0/self.contentScaleFactor, 1.0/self.contentScaleFactor);
+                CGContextFillRect(context, rect);   
             } else {
-                CGContextMoveToPoint(context, x, y);
-                previousPointValid = YES;
+                if (previousPointValid){
+                    CGContextAddLineToPoint(context, x, y);
+                } else {
+                    CGContextMoveToPoint(context, x, y);
+                    previousPointValid = YES;
+                }
             }
         } else {
             previousPointValid = NO;
