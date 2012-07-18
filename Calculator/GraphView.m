@@ -123,17 +123,17 @@
     CGContextBeginPath(context);
     [[UIColor blueColor] setStroke];
     x = xmin;
-    yObjPtr = [self.dataSource getYInPixelsForX:x forView:self];
+    yObjPtr = [self.dataSource getYInPixelsForX:(x - self.graphOrigin.x)/self.graphScale forView:self];
     if ([yObjPtr isKindOfClass:[NSNumber class]]){
-        y = [yObjPtr floatValue];
+        y = self.graphOrigin.y - ([yObjPtr floatValue]*self.graphScale);
         previousPointValid = YES;
         CGContextMoveToPoint(context, x, y);
     }
     
     for (x = xmin; x <= xmax; x += 1.0/self.contentScaleFactor){
-        yObjPtr = [self.dataSource getYInPixelsForX:x forView:self];
+        yObjPtr = [self.dataSource getYInPixelsForX:(x - self.graphOrigin.x)/self.graphScale forView:self];
         if ([yObjPtr isKindOfClass:[NSNumber class]]){
-            y = [yObjPtr floatValue];
+            y = self.graphOrigin.y - ([yObjPtr floatValue]*self.graphScale);
             if (previousPointValid){
                 CGContextAddLineToPoint(context, x, y);
             } else {

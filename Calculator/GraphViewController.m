@@ -55,22 +55,13 @@
 - (id) getYInPixelsForX:(CGFloat)xVal forView:(GraphView *)sender
 {
     NSDictionary *xvalDict;
-    CGFloat trueX, trueY;
     id calcResult;
-    CGPoint formulaLocation;
     
-    formulaLocation.x = 10;
-    formulaLocation.y = 10;
-    
-    trueX = (xVal - sender.graphOrigin.x)/sender.graphScale;
-    
-    xvalDict = [NSDictionary dictionaryWithObject:[NSNumber numberWithDouble:trueX] forKey:@"x"];
-    
+    xvalDict = [NSDictionary dictionaryWithObject:[NSNumber numberWithDouble:xVal] forKey:@"x"];
     
     calcResult = [CalculatorBrain runProgram:self.program usingVariableValues:xvalDict]; // fix this to allow for string value (i.e. error) return
     if ([calcResult isKindOfClass:[NSNumber class]]){
-        trueY = [calcResult floatValue];
-        return([NSNumber numberWithFloat: sender.graphOrigin.y - (trueY*sender.graphScale)]);
+        return([NSNumber numberWithFloat: [calcResult floatValue]]);
     } else {
         return @"Error"; // When the caller receives a string, it will know there is an error in the value calculation
     }

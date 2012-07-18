@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11E53" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="vAu-vc-qsP">
+    <dependencies>
+        <deployment defaultVersion="1296" identifier="iOS"/>
+        <development defaultVersion="4200" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
+    </dependencies>
+    <scenes>
+        <!--Graph View Controller-->
+        <scene sceneID="fI2-fG-gXk">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2dn-GJ-7cl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="HO6-0g-15Q" customClass="GraphViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9gE-dG-crN">
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="372" y="540"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="i8t-0b-8Dg">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PnT-2P-MAM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController id="iUg-Uh-1Sg" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="urt-ql-Wjd">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="372" y="-397"/>
+        </scene>
+        <!--Split View Controller-->
+        <scene sceneID="Svq-Fh-gPc">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fbp-0J-0jI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <splitViewController id="vAu-vc-qsP" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <connections>
+                        <segue destination="iUg-Uh-1Sg" kind="relationship" relationship="masterViewController" id="Kom-Al-6SR"/>
+                        <segue destination="HO6-0g-15Q" kind="relationship" relationship="detailViewController" id="qRS-M7-5V7"/>
+                    </connections>
+                </splitViewController>
+            </objects>
+            <point key="canvasLocation" x="-610" y="72"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination"/>
+    </simulatedMetricsContainer>
+</document>
