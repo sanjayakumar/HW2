@@ -37,15 +37,25 @@
     }
 }
 
-- (void)setProgram:(id)program
+- (void) printEquationInGraph
 {
-    _program = program;
-    
     // Now print the formula we are plotting
     // If there is a comma, only show the text after the rightmost command
     NSArray *listPrograms = [[CalculatorBrain descriptionOfProgram:_program] componentsSeparatedByString:@","];
     
-    self.equationDisplay.text = [NSString stringWithFormat:@"y = %@",[listPrograms lastObject]];
+    if (![[listPrograms lastObject] isEqualToString:@""]){
+        self.equationDisplay.text = [NSString stringWithFormat:@"y = %@",[listPrograms lastObject]];
+        NSLog(@"Formula: %@", [listPrograms lastObject]);
+    } else {
+        self.equationDisplay.text = nil;
+    }
+}
+
+- (void)setProgram:(id)program
+{
+    _program = program;
+    
+    [self printEquationInGraph];
     
     [self.graphView setNeedsDisplay]; // redraw the graph if the program changes
 }
@@ -67,12 +77,7 @@
     
     self.graphView.dataSource = self;
     
-    // Now print the formula we are plotting
-    // If there is a comma, only show the text after the rightmost command
-    NSArray *listPrograms = [[CalculatorBrain descriptionOfProgram:_program] componentsSeparatedByString:@","];
-    
-    self.equationDisplay.text = [NSString stringWithFormat:@"y = %@",[listPrograms lastObject]];
-
+    [self printEquationInGraph];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

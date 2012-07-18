@@ -47,11 +47,11 @@
             </objects>
             <point key="canvasLocation" x="14" y="622"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Navigation Controller - Calculator-->
         <scene sceneID="nmy-X6-poy">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="THO-L6-Rda" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController id="CKf-kj-qa4" sceneMemberID="viewController">
+                <navigationController title="Calculator" id="CKf-kj-qa4" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="qsq-Ii-8Ld">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -489,32 +489,6 @@
             <point key="canvasLocation" x="454" y="-309"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="CalculatorViewController" superclassName="RotatableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CalculatorViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="display" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="userActionDisplay" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="GraphView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GraphView.h"/>
-            <relationships>
-                <relationship kind="outlet" name="dataSource"/>
-            </relationships>
-        </class>
-        <class className="GraphViewController" superclassName="RotatableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GraphViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="equationDisplay" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
-                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
-            </relationships>
-        </class>
-        <class className="RotatableViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RotatableViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
