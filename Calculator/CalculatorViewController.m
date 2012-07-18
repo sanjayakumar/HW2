@@ -182,4 +182,16 @@
     }
 }
 
+// Need to disable swipes to reveal calculator for iOS 5.1, interferes with pan. MAKE SURE you check that
+// the splitview controller supports the selector "respondsToSelecter" before you call it, or you will
+// crash on iOS 5!
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    if (self.splitViewController) {
+        if ([self.splitViewController respondsToSelector:@selector(presentsWithGesture)]) {
+            self.splitViewController.presentsWithGesture = NO;
+        }
+    }
+}
+
 @end

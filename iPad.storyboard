@@ -16,19 +16,24 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" id="Zg6-B5-qPG" customClass="GraphView">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="1004"/>
+                                <rect key="frame" x="0.0" y="44" width="768" height="960"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="YLD-ZO-e6T">
-                                        <rect key="frame" x="431" y="70" width="317" height="28"/>
+                                        <rect key="frame" x="431" y="26" width="317" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Zlw-ph-JYo">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items/>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -36,6 +41,7 @@
                     <connections>
                         <outlet property="equationDisplay" destination="YLD-ZO-e6T" id="1Ms-97-5SF"/>
                         <outlet property="graphView" destination="Zg6-B5-qPG" id="F0R-ZV-a6s"/>
+                        <outlet property="toolbar" destination="Zlw-ph-JYo" id="xuC-5f-S48"/>
                     </connections>
                 </viewController>
             </objects>
@@ -74,7 +80,7 @@
         <scene sceneID="XzT-1j-bch">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oxR-rV-uZZ" sceneMemberID="firstResponder"/>
-                <viewController id="Bs4-MG-Dg5" customClass="CalculatorViewController" sceneMemberID="viewController">
+                <viewController title="Calculator" id="Bs4-MG-Dg5" customClass="CalculatorViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="o8M-a3-vAn">
                         <rect key="frame" x="0.0" y="64" width="320" height="788"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -502,6 +508,7 @@
             <relationships>
                 <relationship kind="outlet" name="equationDisplay" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
             </relationships>
         </class>
         <class className="RotatableViewController" superclassName="UIViewController">

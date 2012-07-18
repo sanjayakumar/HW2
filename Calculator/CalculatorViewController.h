@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RotatableViewController.h"
+#import "SplitViewBarButtonItemPresenter.h"
 
 @interface CalculatorViewController : RotatableViewController
 @property (weak, nonatomic) IBOutlet UILabel *display;
