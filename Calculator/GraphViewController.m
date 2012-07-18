@@ -22,6 +22,12 @@
 @synthesize graphView = _graphView;
 @synthesize program = _program;
 
+- (void)setProgram:(id)program
+{
+    _program = program;
+    [self.graphView setNeedsDisplay]; // redraw the graph if the program changes
+}
+
 - (void)setGraphView:(GraphView *)graphView
 {
     _graphView = graphView;

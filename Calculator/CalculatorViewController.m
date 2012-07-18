@@ -165,4 +165,21 @@
     [segue.destinationViewController setProgram:self.brain.program];
 }
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (self.splitViewController)
+        // on the iPad, we support all orientations
+        return YES; 
+    else
+        // but no landscape on the iPhone, because I'm too lazy to fix the keypad
+        return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+}
+- (IBAction)graphForIpad {
+    // confirm ipad
+    if (self.splitViewController){
+        id detailViewController = [[self.splitViewController viewControllers] lastObject];
+        [detailViewController  setProgram:self.brain.program];
+    }
+}
+
 @end

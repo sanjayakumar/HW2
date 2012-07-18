@@ -11,6 +11,7 @@
 		B45F985C15B3A21B008E02A2 /* GraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = B45F985B15B3A21B008E02A2 /* GraphView.m */; };
 		B45F986115B4BECD008E02A2 /* AxesDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = B45F985515B37DC6008E02A2 /* AxesDrawer.m */; };
 		B46636B215B625D400D4B4FE /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B46636B115B625D400D4B4FE /* iPad.storyboard */; };
+		B46636B915B6771A00D4B4FE /* RotatableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B46636B815B6755500D4B4FE /* RotatableViewController.m */; };
 		B46EF58215ABE676008CC5EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B46EF58115ABE676008CC5EF /* UIKit.framework */; };
 		B46EF58415ABE676008CC5EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B46EF58315ABE676008CC5EF /* Foundation.framework */; };
 		B46EF58615ABE676008CC5EF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B46EF58515ABE676008CC5EF /* CoreGraphics.framework */; };
@@ -30,6 +31,9 @@
 		B45F985A15B3A21B008E02A2 /* GraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphView.h; sourceTree = "<group>"; };
 		B45F985B15B3A21B008E02A2 /* GraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphView.m; sourceTree = "<group>"; };
 		B46636B115B625D400D4B4FE /* iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = iPad.storyboard; path = ../iPad.storyboard; sourceTree = "<group>"; };
+		B46636B715B6755500D4B4FE /* RotatableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RotatableViewController.h; sourceTree = "<group>"; };
+		B46636B815B6755500D4B4FE /* RotatableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RotatableViewController.m; sourceTree = "<group>"; };
+		B46636BA15B6775700D4B4FE /* SplitViewBarButtonItemPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplitViewBarButtonItemPresenter.h; sourceTree = "<group>"; };
 		B46EF57D15ABE676008CC5EF /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B46EF58115ABE676008CC5EF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B46EF58315ABE676008CC5EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -91,6 +95,9 @@
 		B46EF58715ABE676008CC5EF /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				B46636B715B6755500D4B4FE /* RotatableViewController.h */,
+				B46636BA15B6775700D4B4FE /* SplitViewBarButtonItemPresenter.h */,
+				B46636B815B6755500D4B4FE /* RotatableViewController.m */,
 				B46636B115B625D400D4B4FE /* iPad.storyboard */,
 				B45F985415B37DC6008E02A2 /* AxesDrawer.h */,
 				B45F985515B37DC6008E02A2 /* AxesDrawer.m */,
@@ -192,6 +199,7 @@
 				B45F985915B3A1DF008E02A2 /* GraphViewController.m in Sources */,
 				B45F985C15B3A21B008E02A2 /* GraphView.m in Sources */,
 				B45F986115B4BECD008E02A2 /* AxesDrawer.m in Sources */,
+				B46636B915B6771A00D4B4FE /* RotatableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
