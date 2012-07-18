@@ -24,28 +24,43 @@
 
 #define DEFAULT_SCALE 5 // points per Unit CHECK THIS!
 
-- (CGFloat)graphScale
+/* Saving and getting User Preferences */
+
+- (CGFloat) graphScale
 {
-    if (!_graphScale) {
-        return DEFAULT_SCALE; // don't allow zero scale
-    } else {
-        return _graphScale;
-    }
+    // if the runtime value is 0, then it means it hasn't been set; get it from User Defaults
+    if (!_graphScale){
+        _graphScale = [[NSUserDefaults standardUserDefaults] floatForKey:@"graphScale"];
+        if (!_graphScale){ // If it is STILL zero, meaning user has never set it, return default value
+            _graphScale = DEFAULT_SCALE;
+        }
+    } 
+    return _graphScale;
 }
 
 - (void)setGraphScale:(CGFloat)graphScale
 {
     if (graphScale != _graphScale) {
         _graphScale = graphScale;
+        [[NSUserDefaults standardUserDefaults] setFloat:graphScale forKey:@"graphScale"];
         [self setNeedsDisplay]; // any time our scale changes, call for redraw
     }
 }
 
-- (CGPoint)graphOrigin {
-    if (!self.userHasSelectedOrigin){
+- (CGPoint) graphOrigin
+{
+    NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
+    if (self.userHasSelectedOrigin){
+        return _graphOrigin;
+    }
+    if ([userDef boolForKey:@"userHasSetOrigin"]){ // cannot rely on 0 return of x and y to mean it hasn't been set
+        _graphOrigin.x = [userDef floatForKey:@"graphOriginX"];
+        _graphOrigin.y = [userDef floatForKey:@"graphOriginY"];
+    } else {
         _graphOrigin.x = self.bounds.origin.x + self.bounds.size.width/2;
         _graphOrigin.y = self.bounds.origin.y + self.bounds.size.height/2;
     }
+    self.userHasSelectedOrigin = YES;
     return _graphOrigin;
 }
 
@@ -53,6 +68,11 @@
 {
     if (_graphOrigin.x != graphOrigin.x || _graphOrigin.y != graphOrigin.y){
         _graphOrigin = graphOrigin;
+        NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
+        [userDef setFloat:graphOrigin.x forKey:@"graphOriginX"];
+        [userDef setFloat:graphOrigin.y forKey:@"graphOriginY"];
+        [userDef setBool:TRUE forKey:@"userHasSetOrigin"];
+        self.userHasSelectedOrigin = YES;
         [self setNeedsDisplay];
     }
 }
