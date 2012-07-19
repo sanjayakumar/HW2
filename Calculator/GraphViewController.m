@@ -63,6 +63,14 @@
         self.toolbarTitle.text = equation;
     } else {
         self.navigationbar.title = equation;
+        // What is this below? A way to dynamically adjust font size to fit (from StackOverflow)!
+        UILabel* tlabel=[[UILabel alloc]initWithFrame:CGRectMake(0,0, 400, 40)];
+        tlabel.textAlignment = UITextAlignmentRight;
+        tlabel.text=self.navigationItem.title;
+        tlabel.textColor=[UIColor whiteColor];
+        tlabel.backgroundColor =[UIColor clearColor];
+        tlabel.adjustsFontSizeToFitWidth=YES;
+        self.navigationItem.titleView=tlabel;
     }
 }
 
