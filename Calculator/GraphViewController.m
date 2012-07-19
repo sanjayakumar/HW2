@@ -14,14 +14,12 @@
 
 @interface GraphViewController () <GraphViewDataSource, SplitViewBarButtonItemPresenter>
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
-@property (weak, nonatomic) IBOutlet UILabel *equationDisplay;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationbar;
 @property (weak, nonatomic) IBOutlet UILabel *toolbarTitle;
 @end
 
 @implementation GraphViewController
-@synthesize equationDisplay = _formulaDisplay;
 
 @synthesize graphView = _graphView;
 @synthesize program = _program;
@@ -128,7 +126,6 @@
 }
 
 - (void)viewDidUnload {
-    [self setEquationDisplay:nil];
     [self setNavigationbar:nil];
     [self setToolbarTitle:nil];
     [super viewDidUnload];
