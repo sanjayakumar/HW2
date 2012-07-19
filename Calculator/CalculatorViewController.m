@@ -163,6 +163,9 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // segue only applies to iPhone
+    if (self.userIsInTheMiddleOfEnteringANumber) {
+        [self enterPressed];
+    }
     [segue.destinationViewController setProgram:self.brain.program];
 }
 
@@ -178,6 +181,9 @@
 - (IBAction)graphForIpad {
     // confirm ipad
     if (self.splitViewController){
+        if (self.userIsInTheMiddleOfEnteringANumber) {
+            [self enterPressed];
+        }
         id detailViewController = [[self.splitViewController viewControllers] lastObject];
         [detailViewController  setProgram:self.brain.program];
     }
