@@ -6,7 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
     </dependencies>
     <scenes>
-        <!--Calculator View Controller - Calculator-->
+        <!--Calculator View Controller - Calc-->
         <scene sceneID="5">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -404,25 +404,10 @@
                                     <segue destination="3Yo-Q1-OO3" kind="push" identifier="DrawGraph" id="dUy-Nc-ALz"/>
                                 </connections>
                             </button>
-                            <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="X9o-tJ-Hnf">
-                                <rect key="frame" x="221" y="378" width="79" height="27"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                <accessibility key="accessibilityConfiguration" label="Draw Dots"/>
-                                <connections>
-                                    <action selector="drawGraphInDotMode:" destination="2" eventType="valueChanged" id="ISs-xN-NnN"/>
-                                </connections>
-                            </switch>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Graph Dot Mode" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="10" id="X0N-Xv-Ujj">
-                                <rect key="frame" x="187" y="368" width="41" height="48"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Calculator" id="aqO-F7-faG"/>
+                    <navigationItem key="navigationItem" title="Calc" id="aqO-F7-faG"/>
                     <connections>
                         <outlet property="display" destination="Fgc-zm-5kd" id="or4-Lp-ccl"/>
                         <outlet property="userActionDisplay" destination="IbA-u4-5Qo" id="FRR-8s-zCH"/>
@@ -441,7 +426,17 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="9kR-BY-xg2"/>
+                    <navigationItem key="navigationItem" id="9kR-BY-xg2">
+                        <barButtonItem key="rightBarButtonItem" id="8PY-pw-5ov">
+                            <switch key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="2e7-da-Gce">
+                                <rect key="frame" x="236" y="8" width="79" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="drawGraphUsingDots:" destination="3Yo-Q1-OO3" eventType="valueChanged" id="EQX-Lr-7MX"/>
+                                </connections>
+                            </switch>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="graphView" destination="Og6-IA-doB" id="TuU-Dj-FH0"/>
                         <outlet property="navigationbar" destination="9kR-BY-xg2" id="meO-Co-UU8"/>
@@ -486,7 +481,6 @@
         <class className="GraphViewController" superclassName="RotatableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GraphViewController.h"/>
             <relationships>
-                <relationship kind="outlet" name="equationDisplay" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
                 <relationship kind="outlet" name="navigationbar" candidateClass="UINavigationItem"/>
                 <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>

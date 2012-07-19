@@ -119,10 +119,12 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    if (self.splitViewController) {
-        // default value of slider is on
-        self.drawUsingDots = YES;
-    }
+    // default value of slider is on
+    self.drawUsingDots = YES;
+  }
+- (IBAction)drawGraphUsingDots:(UISwitch *)sender {
+    self.drawUsingDots = sender.on;
+    NSLog(@"switch");
 }
 
 - (void)viewDidUnload {

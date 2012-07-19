@@ -27,7 +27,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="dv7-Pp-2FH"/>
                                     <barButtonItem style="plain" id="WHd-hy-feF">
                                         <view key="customView" contentMode="scaleToFill" id="zFJ-YE-eFf">
-                                            <rect key="frame" x="180" y="6" width="576" height="33"/>
+                                            <rect key="frame" x="91" y="6" width="576" height="33"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Pt0-WO-fVb">
@@ -42,6 +42,15 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" id="x61-3h-P2v">
+                                        <switch key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="xEQ-4d-awJ">
+                                            <rect key="frame" x="677" y="9" width="79" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <connections>
+                                                <action selector="drawGraphUsingDots:" destination="hHz-LL-eW1" eventType="valueChanged" id="Hs2-wE-n3K"/>
+                                            </connections>
+                                        </switch>
                                     </barButtonItem>
                                 </items>
                             </toolbar>
@@ -485,20 +494,6 @@
                                     <action selector="graphForIpad" destination="Bs4-MG-Dg5" eventType="touchUpInside" id="Xpy-21-DyM"/>
                                 </connections>
                             </button>
-                            <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="JIz-jA-LLc">
-                                <rect key="frame" x="221" y="378" width="79" height="27"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="drawGraphInDotMode:" destination="Bs4-MG-Dg5" eventType="valueChanged" id="08Y-2L-awD"/>
-                                </connections>
-                            </switch>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Graph Dot Mode" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="10" id="j3t-3A-Vtu">
-                                <rect key="frame" x="186" y="360" width="42" height="53"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
