@@ -16,6 +16,8 @@
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
 @property (weak, nonatomic) IBOutlet UILabel *equationDisplay;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
+@property (weak, nonatomic) IBOutlet UINavigationItem *navigationbar;
+@property (weak, nonatomic) IBOutlet UILabel *toolbarTitle;
 @end
 
 @implementation GraphViewController
@@ -25,6 +27,8 @@
 @synthesize program = _program;
 @synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
 @synthesize toolbar = _toolbar;
+@synthesize navigationbar = _navigationbar;
+@synthesize toolbarTitle = _toolbarTitle;
 @synthesize drawUsingDots = _drawUsingDots;
 
 - (void) setDrawUsingDots:(BOOL)drawUsingDots
@@ -46,14 +50,21 @@
 
 - (void) printEquationInGraph
 {
+    NSString * equation;
     // Now print the formula we are plotting
     // If there is a comma, only show the text after the rightmost command
     NSArray *listPrograms = [[CalculatorBrain descriptionOfProgram:_program] componentsSeparatedByString:@","];
     
     if (![[listPrograms lastObject] isEqualToString:@""]){
-        self.equationDisplay.text = [NSString stringWithFormat:@"y = %@",[listPrograms lastObject]];
+        equation = [NSString stringWithFormat:@"y = %@",[listPrograms lastObject]];
     } else {
-        self.equationDisplay.text = nil;
+        equation = nil;
+    }
+    
+    if (self.toolbar) {
+        self.toolbarTitle.text = equation;
+    } else {
+        self.navigationbar.title = equation;
     }
 }
 
@@ -118,6 +129,8 @@
 
 - (void)viewDidUnload {
     [self setEquationDisplay:nil];
+    [self setNavigationbar:nil];
+    [self setToolbarTitle:nil];
     [super viewDidUnload];
 }
 @end

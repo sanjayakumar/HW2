@@ -431,7 +431,7 @@
             </objects>
             <point key="canvasLocation" x="-172" y="-37"/>
         </scene>
-        <!--Graph View Controller - Graph-->
+        <!--Graph View Controller-->
         <scene sceneID="au0-zn-SdO">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lvA-2w-yjo" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -439,21 +439,12 @@
                     <view key="view" contentMode="scaleToFill" id="Og6-IA-doB" customClass="GraphView">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="hPF-SM-J3F">
-                                <rect key="frame" x="20" y="20" width="196" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Graph" id="9kR-BY-xg2"/>
+                    <navigationItem key="navigationItem" id="9kR-BY-xg2"/>
                     <connections>
-                        <outlet property="equationDisplay" destination="hPF-SM-J3F" id="oPw-I4-91L"/>
                         <outlet property="graphView" destination="Og6-IA-doB" id="TuU-Dj-FH0"/>
+                        <outlet property="navigationbar" destination="9kR-BY-xg2" id="meO-Co-UU8"/>
                     </connections>
                 </viewController>
             </objects>
@@ -497,7 +488,9 @@
             <relationships>
                 <relationship kind="outlet" name="equationDisplay" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
+                <relationship kind="outlet" name="navigationbar" candidateClass="UINavigationItem"/>
                 <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+                <relationship kind="outlet" name="toolbarTitle" candidateClass="UILabel"/>
             </relationships>
         </class>
         <class className="RotatableViewController" superclassName="UIViewController">
