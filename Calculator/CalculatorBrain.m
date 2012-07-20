@@ -138,6 +138,18 @@
     return [[self class] runProgram:self.program usingVariableValues:nil];
 }
 
++(NSString *) higherPriorityError: (id) secondOp comparedTo: (id) firstOp
+{
+    // Assumption: secondOp is definitely a String (i.e. Error). First Op may or may not be error.
+    if ([firstOp isKindOfClass:[NSNumber class]]){
+        return secondOp;
+    }
+    if ([firstOp isEqualToString:@"Error: Insufficient Operands!"] || [secondOp isEqualToString:@"Error: Insufficient Operands!"]) return @"Error: Insufficient Operands!";
+    if ([firstOp isEqualToString:@"Error: Divide by Zero!"] || [secondOp isEqualToString:@"Error: Divide by Zero!"]) return @"Error: Divide by Zero!";
+    if ([firstOp isEqualToString:@"Error: Square Root of -ve value!"] || [secondOp isEqualToString:@"Error: Square Root of -ve value!"]) return @"Error: Square Root of -ve value!";
+    return secondOp;
+}
+
 + (id)popOperandOffProgramStack:(NSMutableArray *)stack
 {
     double result = 0;
@@ -170,9 +182,10 @@
                 secondOperandPtr = [self popOperandOffProgramStack:stack];
                 
                 if ([secondOperandPtr isKindOfClass:[NSString class]]){
-                    // if the error is "Variable in Use", it may be more informative to the user to check for
+                    // if the operand is a string instead of a number, then it means it contains an error message
+                    // if the error is "Variable in Use", it is more informative to the user to check for
                     // insufficient operands or other kind of errors based on the first operand
-                    return secondOperandPtr; // if the operand is a string instead of a number, then it means it contains an error message
+                    return [self higherPriorityError:secondOperandPtr comparedTo:[self popOperandOffProgramStack:stack]]; 
                 } else {
                     secondOperandValue = [secondOperandPtr doubleValue];
                 }
