@@ -27,6 +27,12 @@
 
 /* Saving and getting User Preferences */
 
+// Performace issues: It turns out pinch and pan become slow if we set the user preferences
+// in the setter. On the other hand, accessing the values in the getter is not too bad since
+// it is only accessed if the run time value has not been initialized.
+// So to summarize: It's ok to READ NSUserDefaults in getter, but DO NOT WRITE to NSUserDefaults
+// in the setter.
+
 - (CGFloat) graphScale
 {
     // if the runtime value is 0, then it means it hasn't been set; get it from User Defaults
@@ -43,17 +49,21 @@
 {
     if (graphScale != _graphScale) {
         _graphScale = graphScale;
-        [[NSUserDefaults standardUserDefaults] setFloat:graphScale forKey:@"graphScale"];
         [self setNeedsDisplay]; // any time our scale changes, call for redraw
     }
 }
 
+- (void)writeScaleToUserDefaults
+{
+    [[NSUserDefaults standardUserDefaults] setFloat:self.graphScale forKey:@"graphScale"];
+}
+
 - (CGPoint) graphOrigin
 {
-    NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
     if (self.userHasSelectedOrigin){
         return _graphOrigin;
     }
+    NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
     if ([userDef boolForKey:@"userHasSetOrigin"]){ // cannot rely on 0 return of x and y to mean it hasn't been set
         _graphOrigin.x = [userDef floatForKey:@"graphOriginX"];
         _graphOrigin.y = [userDef floatForKey:@"graphOriginY"];
@@ -69,13 +79,17 @@
 {
     if (_graphOrigin.x != graphOrigin.x || _graphOrigin.y != graphOrigin.y){
         _graphOrigin = graphOrigin;
-        NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
-        [userDef setFloat:graphOrigin.x forKey:@"graphOriginX"];
-        [userDef setFloat:graphOrigin.y forKey:@"graphOriginY"];
-        [userDef setBool:TRUE forKey:@"userHasSetOrigin"];
         self.userHasSelectedOrigin = YES;
         [self setNeedsDisplay];
     }
+}
+
+- (void)writeOriginToUserDefaults
+{
+    NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
+    [userDef setFloat:self.graphOrigin.x forKey:@"graphOriginX"];
+    [userDef setFloat:self.graphOrigin.y forKey:@"graphOriginY"];
+    [userDef setBool:TRUE forKey:@"userHasSetOrigin"];
 }
 
 - (void) setDrawUsingDots:(BOOL)drawUsingDots
@@ -92,6 +106,10 @@
         (gesture.state == UIGestureRecognizerStateEnded)) {
         self.graphScale *= gesture.scale; // adjust our scale
         gesture.scale = 1;           // reset gestures scale to 1 (so future changes are incremental, not cumulative)
+        
+        if (gesture.state == UIGestureRecognizerStateEnded){
+            [self writeScaleToUserDefaults];
+        }
     }
 }
 
@@ -102,6 +120,7 @@
         tapLocation = [taps locationInView:self];
         self.userHasSelectedOrigin = YES;
         self.graphOrigin = tapLocation;
+        [self writeOriginToUserDefaults];
     }
 }
 
@@ -121,6 +140,10 @@
         [pan setTranslation:zeroTrans inView:self];
         
         self.graphOrigin = newOrigin;
+        
+        if (pan.state == UIGestureRecognizerStateEnded){
+            [self writeOriginToUserDefaults];
+        }
     }
 }
 

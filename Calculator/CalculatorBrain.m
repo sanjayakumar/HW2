@@ -257,12 +257,37 @@
     return [self popOperandOffProgramStack:stack];
 }
 
+static NSSet * _listOfOperations;
+static NSSet * _oneOperandOperations;
+static NSSet * _twoOperandOperations;
+
+// instantiate a set which contains known operations
++ (NSSet *) listOfOperations
+{
+    if (!_listOfOperations) _listOfOperations = [NSSet setWithObjects: @"+", @"-", @"/", @"*", @"sqrt", @"π", @"sin", @"cos", @"ChSgn", nil];
+    return _listOfOperations;
+}
+
+// NSSet *zeroOperandOperations = [NSSet setWithObjects: @"π", nil]; // Not used since default value
++ (NSSet *) oneOperandOperations
+{
+    if (!_oneOperandOperations) _oneOperandOperations = [NSSet setWithObjects: @"sqrt", @"sin", @"cos", @"ChSgn", nil];
+    return _oneOperandOperations;
+}
+
++ (NSSet *) twoOperandOperations
+{
+    if (!_twoOperandOperations) _twoOperandOperations = [NSSet setWithObjects: @"+", @"-", @"/", @"*", nil];
+    return _twoOperandOperations;
+}
+
+
 + (BOOL)isOperation:(NSString *)operation{
     
     // instantiate a set which contains known operations
-    NSSet *setOfOperations = [NSSet setWithObjects: @"+", @"-", @"/", @"*", @"sqrt", @"π", @"sin", @"cos", @"ChSgn", nil];
+    [NSSet setWithObjects: @"+", @"-", @"/", @"*", @"sqrt", @"π", @"sin", @"cos", @"ChSgn", nil];
     
-    if ([setOfOperations containsObject: operation]){
+    if ([[self listOfOperations] containsObject: operation]){
         return YES;
     } else {
         return NO;
@@ -270,13 +295,10 @@
 }
 
 + (int) numOperands:(NSString *)operation{ // given an operation, this method returns the number of operands
-    // NSSet *zeroOperandOperations = [NSSet setWithObjects: @"π", nil]; // Not used since default value
-    NSSet *oneOperandOperations = [NSSet setWithObjects: @"sqrt", @"sin", @"cos", @"ChSgn", nil];
-    NSSet *twoOperandOperations = [NSSet setWithObjects: @"+", @"-", @"/", @"*", nil];
     
-    if ([twoOperandOperations containsObject:operation]){
+    if ([[self twoOperandOperations] containsObject:operation]){
         return 2;
-    } else if ([oneOperandOperations containsObject:operation]){
+    } else if ([[self oneOperandOperations] containsObject:operation]){
         return 1;
     } else {
         return 0; // no need to check the set
