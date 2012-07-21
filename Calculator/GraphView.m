@@ -102,14 +102,18 @@
 
 - (void)pinch:(UIPinchGestureRecognizer *)gesture
 {
+    if ((gesture.state == UIGestureRecognizerStateBegan)){
+        [self.dataSource disableCache:self];
+        return;
+    }
     if ((gesture.state == UIGestureRecognizerStateChanged) ||
         (gesture.state == UIGestureRecognizerStateEnded)) {
         self.graphScale *= gesture.scale; // adjust our scale
-        gesture.scale = 1;           // reset gestures scale to 1 (so future changes are incremental, not cumulative)
-        
         if (gesture.state == UIGestureRecognizerStateEnded){
             [self writeScaleToUserDefaults];
+            [self.dataSource enableCache:self];
         }
+        gesture.scale = 1; // reset gestures scale to 1 (so future changes are incremental, not cumulative)
     }
 }
 

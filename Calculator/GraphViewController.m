@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationbar;
 @property (weak, nonatomic) IBOutlet UILabel *toolbarTitle;
 @property (strong, nonatomic) NSMutableDictionary *yValueCache;
+@property BOOL cacheEnabled;
 @end
 
 @implementation GraphViewController
@@ -30,8 +31,9 @@
 @synthesize toolbarTitle = _toolbarTitle;
 @synthesize drawUsingDots = _drawUsingDots;
 @synthesize yValueCache = _yValueCache;
+@synthesize cacheEnabled = _cacheEnabled;
 
-#define MAX_DICT_ENTRIES 5000  // since dictionary is a cache, we limit the size. Move to zero size if it reaches MAX. 
+#define MAX_DICT_ENTRIES 2000  // since dictionary is a cache, we limit the size. Move to zero size if it reaches MAX. 
                                // we don't have the keys, so it goes directly from 50,000 to zero!
 
 - (NSMutableDictionary *) yValueCache
@@ -44,7 +46,7 @@
 {
     _drawUsingDots = drawUsingDots;
     self.graphView.drawUsingDots = drawUsingDots;
-    NSLog(@"total: %i hits:%i DictSize: %i", num_requests, num_hits, [self.yValueCache count]);
+    //NSLog(@"total: %i hits:%i DictSize: %i", num_requests, num_hits, [self.yValueCache count]);
 }
 
 - (void)setSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem
@@ -90,7 +92,8 @@
 {
     _program = program;
     
-    _yValueCache = nil; // Of course, if the equation changes, we must invalidate the cache!
+    self.yValueCache = nil; // Of course, if the equation changes, we must invalidate the cache!
+    self.cacheEnabled = YES;
     
     [self printEquationInGraph];
     
@@ -134,18 +137,31 @@ static int num_hits = 0;
     num_requests++;
     
     NSNumber *xptr = [NSNumber numberWithFloat:xVal];
-    if ((calcResult = [self.yValueCache objectForKey:xptr])){ // cache hit
+    if (self.cacheEnabled && (calcResult = [self.yValueCache objectForKey:xptr])){ // cache enabled and hit
         num_hits++;
     } else {
         // since runProgram takes up lot of CPU, only run it if there is a cache miss
         xvalDict = [NSDictionary dictionaryWithObject:[NSNumber numberWithDouble:xVal] forKey:@"x"];
         calcResult = [CalculatorBrain runProgram:self.program usingVariableValues:xvalDict];
-        [self.yValueCache setObject:calcResult forKey:xptr];
         
-        // We can't let the cache grow for ever! so delete it if it reaches a limit
-        if ([self.yValueCache count] > MAX_DICT_ENTRIES)_yValueCache = nil;
+        if (self.cacheEnabled){
+            [self.yValueCache setObject:calcResult forKey:xptr];
+            // We can't let the cache grow for ever! so delete it if it reaches a limit
+            if ([self.yValueCache count] > MAX_DICT_ENTRIES)self.yValueCache = nil;
+        }
     }
     return calcResult;
+}
+
+- (void) enableCache:(GraphView *)sender
+{
+    self.cacheEnabled = YES;
+}
+
+- (void) disableCache:(GraphView *)sender
+{
+    self.cacheEnabled = NO;
+    self.yValueCache = nil;
 }
 
 - (void)awakeFromNib {

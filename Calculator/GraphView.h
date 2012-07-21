@@ -11,6 +11,8 @@
 
 @protocol GraphViewDataSource
 - (id) getYInPixelsForX:(CGFloat)xVal forView:(GraphView *)sender;
+- (void) enableCache: (GraphView *) sender;
+- (void) disableCache: (GraphView *) sender; 
 @end
 
 
