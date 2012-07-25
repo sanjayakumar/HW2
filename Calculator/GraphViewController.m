@@ -11,14 +11,16 @@
 #import "CalculatorBrain.h"
 #import "AxesDrawer.h"
 #import "SplitViewBarButtonItemPresenter.h"
+#import "CalculatorProgramsTableViewController.h"
 
-@interface GraphViewController () <GraphViewDataSource, SplitViewBarButtonItemPresenter>
+@interface GraphViewController () <GraphViewDataSource, SplitViewBarButtonItemPresenter, CalculatorProgramsTableViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationbar;
 @property (weak, nonatomic) IBOutlet UILabel *toolbarTitle;
 @property (strong, nonatomic) NSMutableDictionary *yValueCache;
 @property BOOL cacheEnabled;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 @end
 
 @implementation GraphViewController
@@ -32,6 +34,7 @@
 @synthesize drawUsingDots = _drawUsingDots;
 @synthesize yValueCache = _yValueCache;
 @synthesize cacheEnabled = _cacheEnabled;
+@synthesize popoverController;
 
 #define MAX_DICT_ENTRIES 2000  // since dictionary is a cache, we limit the size. Move to zero size if it reaches MAX. 
                                // we don't have the keys, so it goes directly from 50,000 to zero!
@@ -178,4 +181,64 @@ static int num_hits = 0;
     [self setToolbarTitle:nil];
     [super viewDidUnload];
 }
+#define FAVORITES_KEY @"CalculatorGraphViewController.Favorites"
+
+- (IBAction)addToFavorites:(id)sender
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favorites = [[defaults objectForKey:FAVORITES_KEY] mutableCopy];
+    if (!favorites) favorites = [NSMutableArray array];
+    [favorites addObject:self.program];
+    [defaults setObject:favorites forKey:FAVORITES_KEY];
+    [defaults synchronize];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"Show Favorite Graphs"]) {
+        // this if statement added after lecture to prevent multiple popovers
+        // appearing if the user keeps touching the Favorites button over and over
+        // simply remove the last one we put up each time we segue to a new one
+        if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
+            UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
+            [self.popoverController dismissPopoverAnimated:YES];
+            self.popoverController = popoverSegue.popoverController; // might want to be popover's delegate and self.popoverController = nil on dismiss?
+        }
+        NSArray *programs = [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITES_KEY];
+        [segue.destinationViewController setPrograms:programs];
+        [segue.destinationViewController setDelegate:self];
+    }
+}
+
+- (void)calculatorProgramsTableViewController:(CalculatorProgramsTableViewController *)sender
+                                 choseProgram:(id)program
+{
+    self.program = program;
+    // if you wanted to close the popover when a graph was selected
+    // you could uncomment the following line
+    // you'd probably want to set self.popoverController = nil after doing so
+    // [self.popoverController dismissPopoverAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES]; // added after lecture to support iPhone
+}
+
+// added after lecture to support deletion from the table
+// deletes the given program from NSUserDefaults (including duplicates)
+// then resets the Model of the sender
+
+- (void)calculatorProgramsTableViewController:(CalculatorProgramsTableViewController *)sender
+                               deletedProgram:(id)program
+{
+    NSString *deletedProgramDescription = [CalculatorBrain descriptionOfProgram:program];
+    NSMutableArray *favorites = [NSMutableArray array];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    for (id program in [defaults objectForKey:FAVORITES_KEY]) {
+        if (![[CalculatorBrain descriptionOfProgram:program] isEqualToString:deletedProgramDescription]) {
+            [favorites addObject:program];
+        }
+    }
+    [defaults setObject:favorites forKey:FAVORITES_KEY];
+    [defaults synchronize];
+    sender.programs = favorites;
+}
+
 @end
